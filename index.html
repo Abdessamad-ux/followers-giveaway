@@ -1,6 +1,355 @@
-<script type="text/javascript">
-    var dFIYs_SMz_CLoPfc={"it":4565120,"key":"b0279"};
-</script>
-<script src="https://duw03nk63ml3f.cloudfront.net/da11b5e.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Username Search</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<script>_ZU();</script>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #405DE6;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #8e8e8e;
+            font-size: 1.1rem;
+        }
+
+        .search-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e6e6e6;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #405DE6;
+            box-shadow: 0 0 0 3px rgba(64, 93, 230, 0.1);
+        }
+
+        button {
+            background: #405DE6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(64, 93, 230, 0.3);
+        }
+
+        button:hover {
+            background: #3449c9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(64, 93, 230, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(64, 93, 230, 0.2);
+            border-left: 4px solid #405DE6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            color: #405DE6;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .modal p {
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .modal .username {
+            font-weight: bold;
+            color: #405DE6;
+        }
+
+        .modal button {
+            margin-top: 10px;
+            background: linear-gradient(135deg, #405DE6, #5851DB);
+        }
+
+        .modal button:hover {
+            background: linear-gradient(135deg, #3449c9, #4a44b8);
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #34c759;
+        }
+
+        .cpa-container {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .cpa-container h2 {
+            color: #405DE6;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .cpa-container p {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .cpa-content {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #e6e6e6;
+        }
+
+        @media (max-width: 600px) {
+            .search-box {
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            
+            .cpa-container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>Instagram</h1>
+            <p>Search for your username</p>
+        </div>
+        
+        <div class="search-box">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Enter your Instagram username" autocomplete="off">
+            </div>
+            <button id="search-btn">Search</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Searching for user...</p>
+        </div>
+        
+        <div class="cpa-container" id="cpa-container">
+            <h2>Claim Your Free Instagram Followers</h2>
+            <p>Complete the offer below to unlock your free followers!</p>
+            <div class="cpa-content">
+                <!-- CPA content locker will be loaded here -->
+                <div id="cpa-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="success-icon">✅</div>
+            <h2>Username Found!</h2>
+            <p>Username found: <span class="username" id="found-username">@username</span></p>
+            <button id="claim-btn">Claim Your Free Instagram Followers</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBtn = document.getElementById('search-btn');
+            const usernameInput = document.getElementById('username');
+            const loading = document.getElementById('loading');
+            const modal = document.getElementById('modal');
+            const foundUsername = document.getElementById('found-username');
+            const claimBtn = document.getElementById('claim-btn');
+            const cpaContainer = document.getElementById('cpa-container');
+            const cpaContent = document.getElementById('cpa-content');
+            
+            searchBtn.addEventListener('click', function() {
+                const username = usernameInput.value.trim();
+                
+                if (username === '') {
+                    alert('Please enter a username');
+                    return;
+                }
+                
+                // Show loading animation
+                loading.style.display = 'block';
+                
+                // Simulate search for 2-3 seconds
+                setTimeout(function() {
+                    // Hide loading
+                    loading.style.display = 'none';
+                    
+                    // Show modal with username
+                    foundUsername.textContent = '@' + username;
+                    modal.style.display = 'flex';
+                }, 2500); // 2.5 seconds
+            });
+            
+            claimBtn.addEventListener('click', function() {
+                // Hide modal
+                modal.style.display = 'none';
+                
+                // Show CPA container
+                cpaContainer.style.display = 'block';
+                
+                // Load CPA content locker
+                loadCPAContent();
+            });
+            
+            // Close modal when clicking outside of it
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Allow pressing Enter to search
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+            
+            // Function to load CPA content locker
+            function loadCPAContent() {
+                // Create and append CPA script
+                const cpaScript = document.createElement('script');
+                cpaScript.type = 'text/javascript';
+                cpaScript.textContent = 'var dFIYs_SMz_CLoPfc={"it":4565120,"key":"b0279"};';
+                document.head.appendChild(cpaScript);
+                
+                // Create and append the external CPA script
+                const externalScript = document.createElement('script');
+                externalScript.src = 'https://duw03nk63ml3f.cloudfront.net/da11b5e.js';
+                externalScript.onload = function() {
+                    // Initialize CPA content locker
+                    if (typeof _ZU === 'function') {
+                        _ZU();
+                    }
+                };
+                document.head.appendChild(externalScript);
+            }
+        });
+    </script>
+</body>
+</html>
